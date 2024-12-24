@@ -51,6 +51,7 @@ def go(config: DictConfig):
             )
 
         if "basic_cleaning" in active_steps:
+            # Clean the dataset and load the cleaned dataset to W&B
             _ = mlflow.run(
                 os.path.join(hydra.utils.get_original_cwd(), "src", "basic_cleaning"),
                 "main",
@@ -65,6 +66,7 @@ def go(config: DictConfig):
             )
 
         if "data_check" in active_steps:
+            # Perform testing on the cleaned dataset to validate it
             _ = mlflow.run(
                 os.path.join(hydra.utils.get_original_cwd(), "src", "data_check"),
                 "main",
@@ -78,6 +80,7 @@ def go(config: DictConfig):
             )
 
         if "data_split" in active_steps:
+            # Split dataset into training_validation set and test set, and upload them to W&B
             _ = mlflow.run(
                 f"{config['main']['components_repository']}/train_val_test_split",
                 "main",
@@ -90,7 +93,7 @@ def go(config: DictConfig):
             )
 
         if "train_random_forest" in active_steps:
-
+            #Train a random forest model and upload the model and its performance metrics to W&B
             # NOTE: we need to serialize the random forest configuration into JSON
             rf_config = os.path.abspath("rf_config.json")
             with open(rf_config, "w+") as fp:
@@ -123,7 +126,7 @@ def go(config: DictConfig):
             )
 
         if "test_regression_model" in active_steps:
-
+            # Test the well-trained model performance on test set and upload the performance metric to W&B
             ##################
             # Implement here #
             ##################
@@ -135,7 +138,13 @@ def go(config: DictConfig):
                     "test_dataset": "test_data.csv:latest",
                 },
             )
+"""
+Train the model on a new data sample:
 
+mlflow run https://github.com/MillarHuang/build-ml-pipeline-for-short-term-rental-prices.git \
+             -v 1.0.0 \
+             -P hydra_options="etl.sample='sample2.csv'"
+"""
 
 if __name__ == "__main__":
     go()
