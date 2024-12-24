@@ -1,3 +1,71 @@
+# Weights&Bias link (results):
+https://wandb.ai/zhiconghuang-non/nyc_airbnb?nw=nwuserzhiconghuang
+# Github link (code):
+https://github.com/MillarHuang/build-ml-pipeline-for-short-term-rental-prices.git
+
+## Instruction:
+### 1.Download data: download data and upload it to W&B
+```
+mlflow run https://github.com/MillarHuang/build-ml-pipeline-for-short-term-rental-prices.git \
+             -v 1.0.1 \
+             -P steps=download
+```
+### 2.Basic Cleaning: clean the dataset and load the cleaned dataset to W&B
+```
+mlflow run https://github.com/MillarHuang/build-ml-pipeline-for-short-term-rental-prices.git \
+             -v 1.0.1 \
+             -P steps=basic_cleaning
+```
+### 3.Data checking: perform tests on the cleaned dataset to validate it
+```
+mlflow run https://github.com/MillarHuang/build-ml-pipeline-for-short-term-rental-prices.git \
+             -v 1.0.1 \
+             -P steps=data_check
+```
+### 4.Data split: split dataset into training_validation set and test set, and upload them to W&B
+```
+mlflow run https://github.com/MillarHuang/build-ml-pipeline-for-short-term-rental-prices.git \
+             -v 1.0.1 \
+             -P steps=data_split \
+```
+### 5.Training: train a random forest model and upload the inference artifact and its performance metrics to W&B
+```
+mlflow run https://github.com/MillarHuang/build-ml-pipeline-for-short-term-rental-prices.git \
+             -v 1.0.1 \
+             -P steps=train_random_forest
+```
+### 6.Optimize model performance by performing grid search(on parameters: max_tfidf_features, random_forest.max_features)
+```
+mlflow run https://github.com/MillarHuang/build-ml-pipeline-for-short-term-rental-prices.git \
+             -v 1.0.1 \
+             -P steps=train_random_forest \
+             -P hydra_options="modeling.max_tfidf_features=10,15,30 modeling.random_forest.max_features=0.1,0.33,0.5,0.75,1 -m"
+```
+### 7.Testing: test the optimized well-trained model performance on test set and upload the performance metric to W&B
+```
+mlflow run https://github.com/MillarHuang/build-ml-pipeline-for-short-term-rental-prices.git \
+             -v 1.0.1 \
+             -P steps=test_regression_model
+```
+## Implement the whole MLpipeline
+```
+mlflow run https://github.com/MillarHuang/build-ml-pipeline-for-short-term-rental-prices.git \
+             -v 1.0.1
+```
+## Train the model on a new data sample
+```
+mlflow run https://github.com/MillarHuang/build-ml-pipeline-for-short-term-rental-prices.git \
+             -v 1.0.1 \
+             -P hydra_options="etl.sample='sample2.csv'"
+```
+
+
+
+
+
+
+
+# Background of project:
 # Build an ML Pipeline for Short-Term Rental Prices in NYC
 You are working for a property management company renting rooms and properties for short periods of 
 time on various rental platforms. You need to estimate the typical price for a given property based 
