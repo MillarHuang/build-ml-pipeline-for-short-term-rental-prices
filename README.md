@@ -4,7 +4,7 @@ https://wandb.ai/zhiconghuang-non/nyc_airbnb?nw=nwuserzhiconghuang
 https://github.com/MillarHuang/build-ml-pipeline-for-short-term-rental-prices.git
 
 ## Instruction:
-### 1.Download data: download data nd upload it to W&B
+### 1.Download data: download data and upload it to W&B
 ```
 mlflow run https://github.com/MillarHuang/build-ml-pipeline-for-short-term-rental-prices.git \
              -v 1.0.1 \
